@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
 
 import "./styles.css";
-
-function SignUpForm({ isVisible, onSignUp }) {
+function SignUpForm({ isVisible, onSignup }) {
   const emailInput = useRef();
   useEffect(() => {
     if (isVisible) {
@@ -12,34 +11,32 @@ function SignUpForm({ isVisible, onSignUp }) {
   }, [isVisible]);
   return (
     <form style={{ display: isVisible ? "block" : "none" }}>
-      <labeL>
+      <label>
         Email
         <input ref={emailInput} />
-      </labeL>
+      </label>
       <br />
-      <button onClick={onSignUp}>Sign up</button>
+      <button onClick={onSignup}>Sign up</button>
     </form>
   );
 }
-
 function App() {
   const [isSignUpFormVisible, setSignUpFormVisibility] = useState(false);
   const timeoutId = useRef();
   useEffect(() => {
-    timeoutId = setTimeout(() => setSignUpFormVisibility(true), 3000);
+    timeoutId.current = setTimeout(() => setSignUpFormVisibility(true), 3000);
     return () => {
-      clearTimeout(timeoutId);
+      clearTimeout(timeoutId.current);
     };
   }, []);
-
   return (
     <div className="App">
       <SignUpForm
         isVisible={isSignUpFormVisible}
-        onSignUp={(event) => {
-          event.preventDefalt();
+        onSignup={(event) => {
+          event.preventDefault();
           setSignUpFormVisibility(false);
-          clearTimeout(timeoutId);
+          clearTimeout(timeoutId.current);
         }}
       />
       <button onClick={() => setSignUpFormVisibility((prev) => !prev)}>
